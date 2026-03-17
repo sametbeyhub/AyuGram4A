@@ -2,9 +2,10 @@ name: Android CI (Telegram Build)
 
 on:
   push:
-    branches: [ "master", "main" ] # Senin ana dalın hangisiyse (genelde master veya main olur)
+    branches: [ "rewrite" ]
   pull_request:
-    branches: [ "master", "main" ]
+    branches: [ "rewrite" ]
+
 
 jobs:
   build:
