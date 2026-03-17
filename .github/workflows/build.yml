@@ -1,0 +1,37 @@
+name: Android CI (Telegram Build)
+
+on:
+  push:
+    branches: [ "master", "main" ] # Senin ana dalın hangisiyse (genelde master veya main olur)
+  pull_request:
+    branches: [ "master", "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Source Code
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive # Telegram'ın alt modülleri için önemli
+
+    - name: set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: gradle
+
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+
+    - name: Build with Gradle
+      run: ./gradlew assembleDebug --stacktrace # İlk aşamada debug sürümü almak daha kolaydır
+
+    - name: Upload APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: MyTelegramMod-Debug
+        path: app/build/outputs/apk/debug/*.apk
+
